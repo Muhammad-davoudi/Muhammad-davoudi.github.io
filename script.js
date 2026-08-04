@@ -1,6 +1,16 @@
 const GITHUB_USERNAME = "Muhammad-davoudi";
-const MAX_PROJECTS = 8;
-const EXCLUDED_REPOS = ["Muhammad-davoudi", "muhammad-davoudi"];
+
+// ============================================
+// فقط ریپوهایی که اینجا بنویسی نمایش داده می‌شوند
+// هر وقت پروژه جدید خواستی اضافه کنی، اسمش را اینجا بنویس
+// ============================================
+const ALLOWED_REPOS = [
+  "qwen2vl-persian-ocr-lora",
+  "bank-chatbot"
+  // "اسم-ریپو-جدید"   ← هر وقت خواستی این خط را از حالت کامنت دربیار و اسم بگذار
+];
+
+// ============================================
 
 async function loadProjects() {
   const container = document.getElementById("projects-container");
@@ -15,16 +25,13 @@ async function loadProjects() {
 
     const repos = await response.json();
 
-    const filtered = repos
-      .filter(repo => {
-        const nameLower = repo.name.toLowerCase();
-        const isExcluded = EXCLUDED_REPOS.some(ex => ex.toLowerCase() === nameLower);
-        return !repo.fork && !repo.archived && !isExcluded;
-      })
-      .slice(0, MAX_PROJECTS);
+    // فقط ریپوهایی که در لیست ALLOWED_REPOS هستند
+    const filtered = repos.filter(repo => 
+      ALLOWED_REPOS.includes(repo.name)
+    );
 
     if (filtered.length === 0) {
-      container.innerHTML = `<div class="loading">No public projects found.</div>`;
+      container.innerHTML = `<div class="loading">No approved projects found.</div>`;
       return;
     }
 
@@ -39,14 +46,12 @@ async function loadProjects() {
       let icon = "fa-code";
       let theme = "theme-default";
 
-      // اول چت‌بات / بانک را چک کن
       if (nameLower.includes("chat") || nameLower.includes("rag") || 
           nameLower.includes("bank") || descLower.includes("rag") || 
           descLower.includes("chatbot") || descLower.includes("banking")) {
         icon = "fa-comments";
         theme = "theme-chat";
       }
-      // بعد OCR / VLM
       else if (nameLower.includes("ocr") || nameLower.includes("vlm") || 
                descLower.includes("ocr") || descLower.includes("vlm") || 
                nameLower.includes("qwen")) {
