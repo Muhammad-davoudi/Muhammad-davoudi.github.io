@@ -6,8 +6,8 @@ const GITHUB_USERNAME = "Muhammad-davoudi";
 // ============================================
 const ALLOWED_REPOS = [
   "qwen2vl-persian-ocr-lora",
-  "bank-chatbot"
-  // "اسم-ریپو-جدید"   ← هر وقت خواستی این خط را از حالت کامنت دربیار و اسم بگذار
+  "bank-chatbot",
+  "productiq"
 ];
 
 // ============================================
