@@ -7,7 +7,7 @@ const GITHUB_USERNAME = "Muhammad-davoudi";
 const ALLOWED_REPOS = [
   "qwen2vl-persian-ocr-lora",
   "bank-chatbot",
-  "ProductInsight — AI-Powered Product Analytics Platform"
+  "productiq"
 ];
 
 // ============================================
