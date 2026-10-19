@@ -1,16 +1,18 @@
 const GITHUB_USERNAME = "Muhammad-davoudi";
 
-// ============================================
-// فقط ریپوهایی که اینجا بنویسی نمایش داده می‌شوند
-// هر وقت پروژه جدید خواستی اضافه کنی، اسمش را اینجا بنویس
-// ============================================
+// فقط این پروژه‌ها نمایش داده می‌شوند
 const ALLOWED_REPOS = [
   "qwen2vl-persian-ocr-lora",
   "bank-chatbot",
   "productiq"
 ];
 
-// ============================================
+// عنوان دلخواه برای نمایش (به‌جای اسم ریپو)
+const PROJECT_TITLES = {
+  "qwen2vl-persian-ocr-lora": "Persian OCR VLM",
+  "bank-chatbot": "Bank Chatbot",
+  "productiq": "ProductInsight — AI-Powered Product Analytics Platform"
+};
 
 async function loadProjects() {
   const container = document.getElementById("projects-container");
@@ -25,8 +27,7 @@ async function loadProjects() {
 
     const repos = await response.json();
 
-    // فقط ریپوهایی که در لیست ALLOWED_REPOS هستند
-    const filtered = repos.filter(repo => 
+    const filtered = repos.filter(repo =>
       ALLOWED_REPOS.includes(repo.name)
     );
 
@@ -46,18 +47,25 @@ async function loadProjects() {
       let icon = "fa-code";
       let theme = "theme-default";
 
-      if (nameLower.includes("chat") || nameLower.includes("rag") || 
-          nameLower.includes("bank") || descLower.includes("rag") || 
+      if (nameLower.includes("chat") || nameLower.includes("rag") ||
+          nameLower.includes("bank") || descLower.includes("rag") ||
           descLower.includes("chatbot") || descLower.includes("banking")) {
         icon = "fa-comments";
         theme = "theme-chat";
       }
-      else if (nameLower.includes("ocr") || nameLower.includes("vlm") || 
-               descLower.includes("ocr") || descLower.includes("vlm") || 
+      else if (nameLower.includes("ocr") || nameLower.includes("vlm") ||
+               descLower.includes("ocr") || descLower.includes("vlm") ||
                nameLower.includes("qwen")) {
         icon = "fa-book-open";
         theme = "theme-ocr";
       }
+      else if (nameLower.includes("productiq") || descLower.includes("product") ||
+               descLower.includes("analytics") || descLower.includes("insight")) {
+        icon = "fa-chart-line";
+        theme = "theme-default";
+      }
+
+      const displayTitle = PROJECT_TITLES[repo.name] || repo.name;
 
       return `
         <a href="${repo.html_url}" target="_blank" class="project-card">
@@ -65,7 +73,7 @@ async function loadProjects() {
             <i class="fas ${icon}"></i>
           </div>
           <div class="project-body">
-            <h3>${repo.name}</h3>
+            <h3>${displayTitle}</h3>
             <p>${repo.description || "No description provided."}</p>
             <div class="project-tags">
               ${tags.map(t => `<span class="tag">${t}</span>`).join("")}
